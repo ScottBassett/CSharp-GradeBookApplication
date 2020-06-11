@@ -19,10 +19,6 @@ namespace GradeBook.GradeBooks
             if (Students.Count < 5)
                 throw new InvalidOperationException(message: "Not enough students!");
 
-            // Figure out how many students it takes to drop a letter grade (20% of the total number of students)
-            // Put all the average grades in order, then figure out where the input grade would fit in the series of grades
-            // Every X students with higher grades than the input grade knocks the letter grade down until you reach F.
-
             var threshold = (int)Math.Ceiling(Students.Count * 0.2);
             var grades = Students.OrderByDescending(e => e.AverageGrade)
                                            .Select(e => e.AverageGrade)
@@ -38,6 +34,22 @@ namespace GradeBook.GradeBooks
                 return 'D';
             else
                 return 'F';
+        }
+
+        public override void CalculateStatistics()
+        {
+            if (Students.Count < 5)
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+            else
+                base.CalculateStatistics();
+        }
+
+        public override void CalculateStudentStatistics(string name)
+        {
+            if (Students.Count < 5)
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+            else
+                base.CalculateStudentStatistics(name);
         }
     }
 }
